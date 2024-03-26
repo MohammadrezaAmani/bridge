@@ -1,5 +1,5 @@
 from typing import Any
-from shared_memory2 import (
+from shared_memory import (
     create_shared_memory,
     read_from_shared_memory,
     write_to_shared_memory,
@@ -47,7 +47,7 @@ class Function:
                 return data["result"]
 
 
-class IdkWhy:
+class Bridge:
     def __init__(self) -> None: ...
 
     def js(self, path: str = None, compiler_options: str = None, *args, **kwargs):
