@@ -1,4 +1,15 @@
 from typing import Any
+from shared_memory2 import (
+    create_shared_memory,
+    read_from_shared_memory,
+    write_to_shared_memory,
+)
+import time
+import uuid
+import orjson as json
+import subprocess
+
+shard_memory = create_shared_memory()
 
 
 class Function:
@@ -7,21 +18,33 @@ class Function:
         path: str,
         compiler_options: str,
         name: str,
-        args: str,
         return_type: str,
-        doc: str,
-        return_value: str,
     ) -> None:
         self.path = path
         self.compiler_options = compiler_options
         self.name = name
-        self.args = args
         self.return_type = return_type
-        self.doc = doc
-        self.return_value = return_value
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
-        return f"Function {self.name} called with {args} and {kwds}"
+        id = str(uuid.uuid4())
+        write_to_shared_memory(
+            shard_memory,
+            json.dumps(
+                {
+                    "op": "call",
+                    "uuid": id,
+                    "args": args,
+                    "path": self.path,
+                    "name": self.name,
+                }
+            ),
+        )
+        subprocess.call(["node", "use2.js"])
+        while True:
+            data = read_from_shared_memory(shard_memory)
+            data = json.loads(data)
+            if data["uuid"] == id and data["op"] == "response":
+                return data["result"]
 
 
 class IdkWhy:
@@ -33,10 +56,7 @@ class IdkWhy:
                 path=path,
                 compiler_options=compiler_options,
                 name=func.__name__,
-                args=args,
                 return_type=func.__annotations__["return"],
-                doc=func.__doc__,
-                return_value=func.__code__.co_varnames,
             )
             return func
 

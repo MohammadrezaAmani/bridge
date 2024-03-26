@@ -17,8 +17,8 @@ def create_shared_memory():
 
 
 def write_to_shared_memory(shm_fd, data):
-    shared_lib.write_to_shared_memory(shm_fd, data.encode())
+    shared_lib.write_to_shared_memory(shm_fd, data)
 
 
 def read_from_shared_memory(shm_fd):
-    return shared_lib.read_from_shared_memory(shm_fd).decode()
+    return shared_lib.read_from_shared_memory(shm_fd)
