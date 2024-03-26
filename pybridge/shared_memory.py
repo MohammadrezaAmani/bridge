@@ -1,6 +1,5 @@
 import ctypes
 
-
 DLL_PATH = "../utils/shared_memory.so"
 
 shared_lib = ctypes.CDLL(DLL_PATH)

@@ -1,5 +1,4 @@
-import asyncio
-from typing import Any, Tuple
+from typing import Tuple
 
 from pybridge.bridge import Bridge
 

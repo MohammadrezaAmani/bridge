@@ -1,9 +1,10 @@
 import pathlib
-import yaml
-from typing import Any, List, Tuple
+from typing import List
 
-from pybridge.utils.templates import FUNC_TEMPLATE, IMPORTS, INITIAL, OUTPUT
+import yaml
+
 from pybridge.utils.convert import convert_type, get_format
+from pybridge.utils.templates import FUNC_TEMPLATE, IMPORTS, INITIAL
 
 DATA_PATH = "example.yaml"
 
